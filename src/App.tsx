@@ -7,8 +7,16 @@ import {
 
 import { 
   Complaint, CommunityPost, RewardPointInfo, 
-  CityNotification, Role, ChatMessage, ComplaintCategory 
+  CityNotification, Role, ChatMessage, ComplaintCategory, Prediction 
 } from "./types";
+
+import {
+  MOCK_COMPLAINTS,
+  MOCK_COMMUNITY_POSTS,
+  MOCK_REWARDS,
+  MOCK_NOTIFICATIONS,
+  MOCK_PREDICTIONS
+} from "./mocks";
 
 // Import custom screens
 import LandingPage from "./components/LandingPage";
@@ -31,11 +39,11 @@ export default function App() {
   const [activePage, setActivePage] = useState<string>("landing");
   
   // Database states
-  const [complaints, setComplaints] = useState<Complaint[]>([]);
-  const [communityPosts, setCommunityPosts] = useState<CommunityPost[]>([]);
-  const [rewards, setRewards] = useState<RewardPointInfo | null>(null);
-  const [notifications, setNotifications] = useState<CityNotification[]>([]);
-  const [predictions, setPredictions] = useState([]);
+  const [complaints, setComplaints] = useState<Complaint[]>(MOCK_COMPLAINTS);
+  const [communityPosts, setCommunityPosts] = useState<CommunityPost[]>(MOCK_COMMUNITY_POSTS);
+  const [rewards, setRewards] = useState<RewardPointInfo | null>(MOCK_REWARDS);
+  const [notifications, setNotifications] = useState<CityNotification[]>(MOCK_NOTIFICATIONS);
+  const [predictions, setPredictions] = useState<Prediction[]>(MOCK_PREDICTIONS);
   
   const [bellOpen, setBellOpen] = useState(false);
   const [sosOpen, setSosOpen] = useState(false);
@@ -62,7 +70,7 @@ export default function App() {
       if (nRes.ok) setNotifications(await nRes.json());
       if (prRes.ok) setPredictions(await prRes.json());
     } catch (err) {
-      console.error("Telemetry fetch synchronization failed, matching local mocks:", err);
+      console.warn("Telemetry fetch: fallback to pre-seeded local mocks", err);
     }
   };
 
